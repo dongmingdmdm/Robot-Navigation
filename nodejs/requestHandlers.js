@@ -27,15 +27,15 @@ function onUploadRequest(request, response, pageServer){
 
 //Our click handler webpage.  When we click the form image, our page is redirrected here, where we then perform the ROS publish
 function onClickRequest(request, response, pageServer){
-	var x = querystring.parse(url.parse(request.url).query)["x"];
-	var y = querystring.parse(url.parse(request.url).query)["y"];
+	var x = parseInt(querystring.parse(url.parse(request.url).query)["x"]);
+	var y = parseInt(querystring.parse(url.parse(request.url).query)["y"]);
 	
 	response.writeHead(200, {"Content-Type": "text/html"});
 	response.write("<html><body>You clicked the image at the following coordinates.<br>X:" + x + ", Y:" + y + "</body></html>");
 	response.end();
 
 	ros.types([
-	   'std_msgs/String'
+	   'std_msgs/Int32'
 	 ], function(String) {
 	   var node = ros.node('talker');
 	   node.topics([
