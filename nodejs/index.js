@@ -17,6 +17,7 @@ handle["/start"] = requestHandlers.onStartRequest;
 handle["/upload"] = requestHandlers.onUploadRequest;
 handle["/click"] = requestHandlers.onClickRequest;
 handle['/send'] = requestHandlers.onSendRequest;
+handle['/map'] = requestHandlers.onMapRequest;
 
 //Start the server up with the given router, handle, and port
 server.start(router, handle, 8888);

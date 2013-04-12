@@ -1,0 +1,23 @@
+#include <list>
+#include "GoalManager.h"
+
+GoalManager::GoalManager() {
+}
+
+GoalManager::~GoalManager() {
+  goals.clear();
+}
+
+bool GoalManager::AddGoal(float x, float y) {
+  goals.push_back(new Goal(x,y));
+  return true;
+}
+
+bool GoalManager::GetNextGoal(Goal &g) {
+  g = (*(goals.front()));
+  return true;
+}
+
+int GoalManager::GetGoalCount() {
+  return goals.size();
+}

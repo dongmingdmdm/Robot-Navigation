@@ -1,0 +1,18 @@
+<package>
+  <description brief="goal_sender">
+
+     goal_sender
+
+  </description>
+  <author>Virus</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/goal_sender</url>
+  <depend package="nav_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="move_base_msgs"/>
+  <depend package="actionlib"/>
+  <depend package="roscpp"/>
+</package>
+
+
