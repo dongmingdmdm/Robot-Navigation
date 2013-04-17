@@ -13,11 +13,14 @@ bool GoalManager::AddGoal(float x, float y) {
   return true;
 }
 
-bool GoalManager::GetNextGoal(Goal &g) {
-  g = (*(goals.front()));
-  return true;
+Goal* GoalManager::GetNextGoal() {
+  return goals.front();
 }
 
 int GoalManager::GetGoalCount() {
   return goals.size();
+}
+
+void GoalManager::RemoveGoal() {
+  goals.pop_front();
 }

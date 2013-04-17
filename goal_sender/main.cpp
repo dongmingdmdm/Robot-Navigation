@@ -29,6 +29,8 @@ MoveBaseClient * ac_ptr = NULL;
 move_base_msgs::MoveBaseGoal goal;
 GoalManager * manager = NULL;
 
+int ready_for_next_goal = 1;
+
 /**ACTION CLIENT callback method area
 *
 *
@@ -38,6 +40,33 @@ void doneCb(const actionlib::SimpleClientGoalState& state,
             const move_base_msgs::MoveBaseActionResultConstPtr& result)
 {
   ROS_INFO("Finished in state [%s]", state.toString().c_str());
+
+  manager->RemoveGoal();  
+  
+  if(manager->GetGoalCount() > 0)
+  {
+    Goal *g = manager->GetNextGoal();
+    
+    ROS_INFO("Sending goal (%f, %f)", g->X(), g->Y());
+    ready_for_next_goal = 1;
+    
+    goal.target_pose.header.frame_id = "map";
+    goal.target_pose.header.stamp = ros::Time::now();
+
+    goal.target_pose.pose.position.x = g->X();
+    goal.target_pose.pose.position.y = g->Y();
+    // arbitrary orientation for now
+    goal.target_pose.pose.orientation.x = 0.0;
+    goal.target_pose.pose.orientation.y = 0.0;
+    goal.target_pose.pose.orientation.z = 0.8;
+    goal.target_pose.pose.orientation.w = -0.6;
+    ac_ptr->sendGoal(goal);
+  }
+  else
+  {
+    ready_for_next_goal = 0;
+  }
+  
 }
 
 // Called once when the goal becomes active
@@ -76,8 +105,13 @@ void unh_goal_callBack( const geometry_msgs::Point::ConstPtr& msg )
 
     manager->AddGoal(msg->x, msg->y);
     ROS_INFO("There are %i goals in the manager", manager->GetGoalCount());
-    ROS_INFO("Sending goal (%f, %f)", goal.target_pose.pose.position.x, goal.target_pose.pose.position.y);
-    ac_ptr->sendGoal(goal);
+    
+    
+    if(manager->GetGoalCount() == 1) {
+      ROS_INFO("Sending goal (%f, %f)", goal.target_pose.pose.position.x, goal.target_pose.pose.position.y);
+      ready_for_next_goal = 1;
+      ac_ptr->sendGoal(goal);
+    }
 }
 
 /********************************************************************

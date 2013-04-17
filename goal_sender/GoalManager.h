@@ -7,8 +7,9 @@ class GoalManager
     GoalManager();
     ~GoalManager();
     bool AddGoal(float x, float y);
-    bool GetNextGoal(Goal& g);
+    Goal* GetNextGoal();
     int GetGoalCount();
+    void RemoveGoal();
     
   private:
     std::list<Goal*> goals;
